@@ -1,0 +1,110 @@
+{%extends 'base.html'%}
+
+{%block body%}
+
+<div class="row">
+    <div class="col-sm-3" style="padding: 2.5rem; margin: auto;">
+        <center>
+            <h1>Quick links</h1>
+            <div class="div"
+                style="background-color: rgb(245, 244, 244);color: black;padding: 1.5rem; box-shadow:2px 3px 5px #999;border-radius: 5px;">
+                {% for c in quicklink reversed %}
+                <p>Total {{c.choseprogress}}</p><span>
+                    <p style="background-color: rgb(70, 70, 107); color: white; padding: 1rem;">{{c.dcount}}</p>
+                </span>
+
+                {%endfor%}
+            </div>
+        </center>
+    </div>
+    <!-- <div class="col-sm-8" style="padding: 2.5rem;">
+        {% for c in crd reversed %}
+        <div class="div" style="background-color: rgb(255, 255, 255);color: black;padding: 1.5rem;">
+            <p>{{c.url}}</p>
+            <p>{{c.choseprogress}}</p>
+            <p>{{c.comment}}</p>
+        </div>
+        {%endfor%}
+
+    </div> -->
+    <div class="col-sm-9" style="padding: 2rem;">
+        <h1>Data Progress Cards<span><a href="admin/"> ( Admin Dashboard )</a></span></h1>
+
+        <div class="div"
+            style="box-shadow:2px 3px 5px #999;padding: 1rem;background-color: rgb(245, 244, 244);border-radius: 5px;">
+            <div id="myBtnContainer">
+                <button class="btn active" onclick="filterSelection('all')"> Show all</button>
+                <button class="btn" onclick="filterSelection('Todo')"> Todo</button>
+                <button class="btn" onclick="filterSelection('Pending')"> Pending</button>
+                <button class="btn" onclick="filterSelection('Done')"> Done</button>
+            </div>
+            <hr style="background-color: black; box-shadow:2px 3px 5px #999;            ">
+            <div class="div ct">
+                {% for c in crd %}
+                <div class="col filterDiv {{c.choseprogress}}">
+                    <div class="p-3 border bg-light">
+                        <p style="color: rgb(202, 55, 55); text-transform: uppercase; font-size: x-large; font-weight: 600;">
+                            {{c.name}}</p>
+                        <hr>
+                        <p
+                            style="color: rgb(202, 55, 55); font-size: small; font-weight: 600; background-color: rgb(233, 233, 233);border-radius: 5px;">
+                            Comment : <small style="color: black;">{{c.comment|truncatechars:30}}</small>
+                        </p>
+                        <hr>
+                        <p style="color: rgb(202, 55, 55); font-size: small; font-weight: 600;border-radius: 5px; ">(
+                            {{c.choseprogress}} ) <small><a target="_blank" href="{{c.url}}">Navigate ></a></small> </p>
+                    </div>
+                </div>
+                {%endfor%}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- //filter  -->
+<script>
+    filterSelection("all")
+    function filterSelection(c) {
+        var x, i;
+        x = document.getElementsByClassName("filterDiv");
+        if (c == "all") c = "";
+        for (i = 0; i < x.length; i++) {
+            RemoveClass(x[i], "show");
+            if (x[i].className.indexOf(c) > -1) AddClass(x[i], "show");
+        }
+    }
+
+    function AddClass(element, name) {
+        var i, arr1, arr2;
+        arr1 = element.className.split(" ");
+        arr2 = name.split(" ");
+        for (i = 0; i < arr2.length; i++) {
+            if (arr1.indexOf(arr2[i]) == -1) { element.className += " " + arr2[i]; }
+        }
+    }
+
+    function RemoveClass(element, name) {
+        var i, arr1, arr2;
+        arr1 = element.className.split(" ");
+        arr2 = name.split(" ");
+        for (i = 0; i < arr2.length; i++) {
+            while (arr1.indexOf(arr2[i]) > -1) {
+                arr1.splice(arr1.indexOf(arr2[i]), 1);
+            }
+        }
+        element.className = arr1.join(" ");
+    }
+
+    // Add active class to the current button (highlight it)
+    var btnContainer = document.getElementById("myBtnContainer");
+    var btns = btnContainer.getElementsByClassName("btn");
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].addEventListener("click", function () {
+            var current = document.getElementsByClassName("active");
+            current[0].className = current[0].className.replace(" active", "");
+            this.className += " active";
+        });
+    }
+</script>
+
+{%endblock%}
